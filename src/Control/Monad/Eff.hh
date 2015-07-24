@@ -75,7 +75,7 @@ namespace Control_Monad_Eff {
   }
 
   template <typename A>
-  inline auto foreachE(list<A> as) {
+  inline auto foreachE(array<A> as) {
     return [=](fn<A,eff_fn<Prelude::Unit>> f) {
       return [=]() {
         for (auto it = as.begin(); it != as.end(); ++it) {
