@@ -15,7 +15,7 @@
 #ifndef Control_Monad_Eff_UnsafeFFI_HH
 #define Control_Monad_Eff_UnsafeFFI_HH
 
-#include "Purescript/Purescript.hh"
+#include "PureScript/PureScript.hh"
 
 namespace Control_Monad_Eff_Unsafe {
   using namespace PureScript;

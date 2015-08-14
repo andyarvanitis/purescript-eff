@@ -15,7 +15,7 @@
 #ifndef EffFFI_HH
 #define EffFFI_HH
 
-#include "Purescript/Purescript.hh"
+#include "PureScript/PureScript.hh"
 
 namespace Control_Monad_Eff {
   using namespace PureScript;
