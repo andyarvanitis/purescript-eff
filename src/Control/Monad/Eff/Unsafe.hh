@@ -20,8 +20,7 @@
 namespace Control_Monad_Eff_Unsafe {
   using namespace PureScript;
 
-  template <typename A>
-  inline auto unsafeInterleaveEff(const eff_fn<A>& f) -> eff_fn<A> {
+  inline auto unsafeInterleaveEff(const any& f) -> const any& {
     return f;
   }
 }

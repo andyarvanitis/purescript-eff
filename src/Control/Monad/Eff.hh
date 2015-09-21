@@ -20,40 +20,35 @@
 namespace Control_Monad_Eff {
   using namespace PureScript;
 
-  template <typename A>
-  inline auto returnE(param<A> a) -> eff_fn<A> {
+  inline auto returnE(const any& a) -> any {
     return [=]() {
       return a;
     };
   }
 
-  template <typename A, typename B>
-  inline auto bindE(const eff_fn<A>& a) -> fn<fn<A,eff_fn<B>>,eff_fn<B>> {
-    return [=](const fn<A,eff_fn<B>>& f) {
+  inline auto bindE(const any& a) -> any {
+    return [=](const any& f) {
       return [=]() {
         return f(a())();
       };
     };
   }
 
-  template <typename A>
-  inline auto runPure(const eff_fn<A>& f) -> A {
+  inline auto runPure(const any& f) -> any {
     return f();
   }
 
-  template <typename A>
-  inline auto untilE(const eff_fn<bool>& f) -> Prelude::Unit {
+  inline auto untilE(const any& f) -> any {
     return [=]() {
-      while (!f());
+      while (!(f()).cast<bool>());
       return Prelude::unit;
     };
   }
 
-  template <typename A>
-  inline auto whileE(const eff_fn<bool>& f) -> fn<eff_fn<A>,Prelude::Unit> {
-    return [=](const eff_fn<A>& a) {
+  inline auto whileE(const any& f) -> any {
+    return [=](const any& a) {
       return [=]() {
-        while (f()) {
+        while (f().cast<bool>()) {
           a();
         }
         return Prelude::unit;
@@ -61,12 +56,11 @@ namespace Control_Monad_Eff {
     };
   }
 
-  template <typename A>
-  inline auto forE(const double lo) {
-    return [=](const double hi) {
-      return [=](const fn<double,eff_fn<Prelude::Unit>>& f) {
+  inline auto forE(const any& lo) {
+    return [=](const any& hi) {
+      return [=](const any& f) {
         return [=]() {
-          for (auto i = lo; i < hi; i++) {
+          for (auto i = lo.cast<double>(); i < hi.cast<double>(); i++) {
             f(i)();
           }
         };
@@ -74,12 +68,12 @@ namespace Control_Monad_Eff {
     };
   }
 
-  template <typename A>
-  inline auto foreachE(const array<A>& as) {
-    return [=](const fn<A,eff_fn<Prelude::Unit>>& f) {
+  inline auto foreachE(const any& as_) {
+    return [=](const any& f) {
       return [=]() {
+        const any::vector& as = as_;
         for (auto it = as.begin(); it != as.end(); ++it) {
-          f(as(*it))();
+          f(*it)();
         }
       };
     };
