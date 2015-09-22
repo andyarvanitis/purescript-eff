@@ -21,14 +21,14 @@ namespace Control_Monad_Eff {
   using namespace PureScript;
 
   inline auto returnE(const any& a) -> any {
-    return [=]() {
+    return [=]() -> any {
       return a;
     };
   }
 
   inline auto bindE(const any& a) -> any {
-    return [=](const any& f) {
-      return [=]() {
+    return [=](const any& f) -> any {
+      return [=]() -> any {
         return f(a())();
       };
     };
@@ -39,15 +39,15 @@ namespace Control_Monad_Eff {
   }
 
   inline auto untilE(const any& f) -> any {
-    return [=]() {
+    return [=]() -> any {
       while (!(f()).cast<bool>());
       return Prelude::unit;
     };
   }
 
   inline auto whileE(const any& f) -> any {
-    return [=](const any& a) {
-      return [=]() {
+    return [=](const any& a) -> any {
+      return [=]() -> any {
         while (f().cast<bool>()) {
           a();
         }
@@ -56,25 +56,27 @@ namespace Control_Monad_Eff {
     };
   }
 
-  inline auto forE(const any& lo) {
-    return [=](const any& hi) {
-      return [=](const any& f) {
-        return [=]() {
+  inline auto forE(const any& lo) -> any {
+    return [=](const any& hi) -> any {
+      return [=](const any& f) -> any {
+        return [=]() -> any {
           for (auto i = lo.cast<double>(); i < hi.cast<double>(); i++) {
             f(i)();
           }
+          return Prelude::unit;
         };
       };
     };
   }
 
-  inline auto foreachE(const any& as_) {
-    return [=](const any& f) {
-      return [=]() {
+  inline auto foreachE(const any& as_) -> any {
+    return [=](const any& f) -> any {
+      return [=]() -> any {
         const any::vector& as = as_;
         for (auto it = as.begin(); it != as.end(); ++it) {
           f(*it)();
         }
+        return Prelude::unit;
       };
     };
   }
