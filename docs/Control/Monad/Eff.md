@@ -8,7 +8,7 @@ data Eff :: # ! -> * -> *
 
 The `Eff` type constructor is used to represent _native_ effects.
 
-See [Handling Native Effects with the Eff Monad](https://github.com/purescript/purescript/wiki/Handling-Native-Effects-with-the-Eff-Monad) for more details.
+See [Handling Native Effects with the Eff Monad](http://www.purescript.org/learn/eff/) for more details.
 
 The first type parameter is a row of effects which represents the contexts in which a computation can be run, and the second type parameter is the return type.
 
@@ -24,7 +24,7 @@ instance monadEff :: Monad (Eff e)
 #### `Pure`
 
 ``` purescript
-type Pure a = forall e. Eff e a
+type Pure a = Eff () a
 ```
 
 The `Pure` type synonym represents _pure_ computations, i.e. ones in which all effects have been handled.
@@ -38,9 +38,6 @@ runPure :: forall a. Pure a -> a
 ```
 
 Run a pure computation and return its result.
-
-Note: since this function has a rank-2 type, it may cause problems to apply this function using the `$` operator. The recommended approach
-is to use parentheses instead.
 
 #### `untilE`
 
